@@ -46,7 +46,7 @@ if [[ $1 == '--help' ]]; then
     exit 0
 fi
 
-for i in $(echo $1 | tr "," " "); do
+for i in ; do
     key=$(echo $i | cut -d '=' -f 1) 
     value=$(echo $i | cut -d '=' -f 2)
 
