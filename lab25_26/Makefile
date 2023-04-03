@@ -1,12 +1,16 @@
-CC = gcc 
-CFLAGS = -g -Werror -pedantic -std=c99
-NAME = main
-
+CC ?= gcc 
+CFLAGS ?= -g -Werror -std=c99
 all:
-	$(CC) main.c $(CFLAGS) -o $(NAME)
+	$(CC) $(CFLAGS) deque.c main.c -o main
 
-debug:
-	$(CC) -g main.c
+main: main.o deque.o
+	${CC} -o main main.o deque.o
+
+main.o: main.c 
+	${CC} ${CFLAGS} -c main.c
+
+functions.o: deque.c deque.o
+	${CC} ${CFLAGS} -c deque.c
 
 clean: 
 	rm -rf *.o main

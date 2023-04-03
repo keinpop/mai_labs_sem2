@@ -1,5 +1,5 @@
 CC ?= gcc 
-CFLAGS ?= -Werror -pedantic
+CFLAGS ?= -g -Werror -pedantic
 main: main.o tree.o
 	${CC} -o main main.o tree.o
 
