@@ -29,6 +29,7 @@ int main()
     instruction();
     printf("If you need instructions again, use the command: 'help'\n");
     while(1) {
+        printf("Enter command -> ");
         scanf("%7s", str);
         if (!strcmp(str, "insf")) {
             printf("Enter element to insert at front: \n");
@@ -45,7 +46,6 @@ int main()
         } else if (!strcmp(str, "delf")) {
             if (isEmpty(dq)) {
                 printf("Nothing to delete - deque is empty.\n");
-                return -1;
             } else {            
                 deleteFront(dq);
                 printf("You removed the front element!\n");
@@ -53,7 +53,6 @@ int main()
         } else if (!strcmp(str, "delb")) {
             if (isEmpty(dq)) {
                 printf("Nothing to delete - deque is empty.\n");
-                return -1;
             } else {
             deleteBack(dq);
             printf("You removed the back element!\n");
@@ -61,7 +60,6 @@ int main()
         } else if (!strcmp(str, "deldq")) {
             if (isEmpty(dq)) {
                 printf("Nothing to delete - deque is empty\n");
-                return -1;
             } else {
                 deleteDq(dq);
                 printf("You have deleted all elements in deque.\n");
@@ -69,11 +67,9 @@ int main()
         } else if (!strcmp(str, "run")) {
             if (isEmpty(dq)) {
                 printf("Nothing to sort - deque is empty\n");
-                return -1;
             }
             if (dq->size == 1) {
                 printf("Deque has only one element!\n");
-                return -1;
             } else {
             bubbleSort(dq);
             printf("Done!\n");
@@ -81,13 +77,22 @@ int main()
         } else if (!strcmp(str, "print")) {
             if (isEmpty(dq)) {
                 printf("You are not added elements deque!\n");
-                return -1;
             } else {
                 printDq(dq);
             } 
         } else if (!strcmp(str, "quit")) {
-            free(dq); 
-            exit(1); 
+            if (dq->size == 1) {
+                deleteBack(dq);
+                free(dq);
+                exit(1);
+            } else if (dq->size == 0) {
+                free(dq); 
+                exit(1); 
+            } else {
+                deleteDq(dq);
+                free(dq); 
+                exit(1); 
+            }
         } else if(!strcmp(str, "help")) {
             instruction();
         } else {
