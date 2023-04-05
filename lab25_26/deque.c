@@ -13,7 +13,7 @@ int isEmpty(Deque *dq) {
     return dq->size == 0;
 }
 
-void insertFront(Deque *dq, Item data) {
+void pushFront(Deque *dq, Item data) {
     Deque_node *dq_el = malloc(sizeof(Deque_node));
     dq_el->next = NULL;
     dq_el->prev = NULL;
@@ -31,7 +31,7 @@ void insertFront(Deque *dq, Item data) {
     dq->size++;
 }
 
-void insertBack(Deque *dq, Item data) {
+void pushBack(Deque *dq, Item data) {
     Deque_node *dq_el = malloc(sizeof(Deque_node));
     dq_el->next = NULL;
     dq_el->prev = NULL;
@@ -48,7 +48,7 @@ void insertBack(Deque *dq, Item data) {
     dq->size++;
 }
 
-int deleteFront(Deque *dq) {
+int popFront(Deque *dq) {
     if (isEmpty(dq)) {
         printf("Nothing to delete - deque is empty.\n");
         return -1;
@@ -67,7 +67,7 @@ int deleteFront(Deque *dq) {
     return 0;
 }
 
-int deleteBack(Deque *dq) {
+int popBack(Deque *dq) {
     if (isEmpty(dq)) {
         printf("Nothing to delete - deque is empty.\n");
         return -1;

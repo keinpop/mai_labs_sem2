@@ -22,10 +22,10 @@ typedef struct _deque {
 // Функции для работы с деком
 void initDeque(Deque *dq);
 int isEmpty(Deque *dq);
-void insertFront(Deque *dq, Item data);
-void insertBack(Deque *dq, Item data);
-int deleteFront(Deque *dq);
-int deleteBack(Deque *dq);
+void pushFront(Deque *dq, Item data);
+void pushBack(Deque *dq, Item data);
+int popFront(Deque *dq);
+int popBack(Deque *dq);
 int deleteDq(Deque *dq);
 int printDq(Deque *dq);
 void bubbleSort(Deque *dq);

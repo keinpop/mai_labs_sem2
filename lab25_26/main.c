@@ -5,10 +5,10 @@
 #include "deque.h"
 void instruction() {
     printf("\n'help' - calls the instruction to the program\n");
-    printf("'insf' - adds elemetns to front space\n");
-    printf("'insb' - adds elements to back space\n");
-    printf("'delf' - delets elements to front space\n");
-    printf("'delb' - delets elements to back space\n");
+    printf("'pushf' - adds elemetns to front space\n");
+    printf("'pushb' - adds elements to back space\n");
+    printf("'popf' - delets elements to front space\n");
+    printf("'popb' - delets elements to back space\n");
     printf("'deldq' - delets all elements in deque\n");
     printf("'run' - you are using bubble sort for recorded deque\n");
     printf("'print' - output in terminal your deque\n");
@@ -31,30 +31,32 @@ int main()
     while(1) {
         printf("Enter command -> ");
         scanf("%7s", str);
-        if (!strcmp(str, "insf")) {
+        if (!strcmp(str, "pushf")) {
             printf("Enter element to insert at front: \n");
             scanf("%d", &data);
-            insertFront(dq, data);
+            pushFront(dq, data);
             printf("You have added an element!\n");
             printf("\n");
-        } else if (!strcmp(str, "insb")) {
+        } else if (!strcmp(str, "pushb")) {
             printf("Enter element to insert at back: \n");
             scanf("%d", &data);
-            insertBack(dq, data);
+            pushBack(dq, data);
             printf("You have added an element!\n");
             printf("\n");
-        } else if (!strcmp(str, "delf")) {
-            if (isEmpty(dq)) {
-                printf("Nothing to delete - deque is empty.\n");
-            } else {            
-                deleteFront(dq);
-                printf("You removed the front element!\n");
-            }
-        } else if (!strcmp(str, "delb")) {
+        } else if (!strcmp(str, "popf")) {
             if (isEmpty(dq)) {
                 printf("Nothing to delete - deque is empty.\n");
             } else {
-            deleteBack(dq);
+                printf("%d - you have delete this element\n", dq->front->value);       
+                popFront(dq);
+                printf("You removed the front element!\n");
+            }
+        } else if (!strcmp(str, "popb")) {
+            if (isEmpty(dq)) {
+                printf("Nothing to delete - deque is empty.\n");
+            } else {
+            printf("%d - you have delete this element\n", dq->back->value);
+            popBack(dq);
             printf("You removed the back element!\n");
             }
         } else if (!strcmp(str, "deldq")) {
@@ -70,9 +72,9 @@ int main()
             }
             if (dq->size == 1) {
                 printf("Deque has only one element!\n");
-            } else {
-            bubbleSort(dq);
-            printf("Done!\n");
+            } else if (dq->size > 1) {
+                bubbleSort(dq);
+                printf("Done!\n");
             }
         } else if (!strcmp(str, "print")) {
             if (isEmpty(dq)) {
@@ -82,7 +84,7 @@ int main()
             } 
         } else if (!strcmp(str, "quit")) {
             if (dq->size == 1) {
-                deleteBack(dq);
+                deleteDq(dq);
                 free(dq);
                 exit(1);
             } else if (dq->size == 0) {
