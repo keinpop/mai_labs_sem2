@@ -128,7 +128,7 @@ void bubbleSort(Deque *dq) {
     for (i = 0; i < dq->size; i++) {
         current = dq->back;
         next = current->next; 
-        for (j = 0;j < dq-> size - i - 1; j++) {
+        for (j = 0; j < dq-> size - i - 1; j++) {
             if (current->value > next->value) { // switch
                 next->prev = current->prev;
                 if (current->prev != NULL) {
@@ -142,7 +142,7 @@ void bubbleSort(Deque *dq) {
                 next->next = current;
                 if (j == 0) {
                     dq->back = next;
-                } else if (j == dq->size - i) {
+                } else if (j == dq->size  - 2) {
                     dq->front = current;
                 }
                 next = current->next;
