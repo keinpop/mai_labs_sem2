@@ -112,7 +112,7 @@ void tree_del_node(Tree tree, TreeItem value) // Рекурсивно удаля
             if (tmp->child) { // Временный имеет дочерний
                 tree_destroy(tmp->child); // Подставляем
             }
-            free(tmp); //Удаление tmp
+            free(tmp); // Удаление tmp
             tmp = NULL; // Удаление
             return;
         } else {
