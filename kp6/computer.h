@@ -21,5 +21,7 @@ typedef struct _comp
 } pc;
 
 int create();
+int add();
+int printTable();
 
 #endif //_COMPUTER_H_
