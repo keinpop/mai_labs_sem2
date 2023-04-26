@@ -20,4 +20,6 @@ typedef struct _comp
     char os[50];
 } pc;
 
+int create();
+
 #endif //_COMPUTER_H_
