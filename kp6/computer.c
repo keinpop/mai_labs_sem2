@@ -27,6 +27,7 @@ int add() {
     data = fopen(name, "rb");
 
     if (!data) {
+        printf("File not found\n");
         return -1;
     } else {
         data = fopen(name, "a");
@@ -45,13 +46,13 @@ int add() {
         printf("Enter a type of disk\n");
         scanf("%s", rec.type_of_disk);
         printf("Enter a number of disks\n");
-        scanf("%d", rec.num_of_disc);
+        scanf("%d", &rec.num_of_disk);
         printf("Enter a capacity of disk\n");
-        scanf("%d", rec.cap_of_disc);
+        scanf("%d", &rec.cap_of_disk);
         printf("Enter a number of integrated controllers\n");
-        scanf("%d", rec.num_of_intcontr);
+        scanf("%d", &rec.num_of_intcontr);
         printf("Enter a number of peripheral devises\n");
-        scanf("%d", rec.num_of_dev);
+        scanf("%d", &rec.num_of_dev);
         printf("Enter an OS\n");
         scanf("%s", rec.os);
         fwrite(&rec, sizeof(pc), 1, data);
@@ -71,7 +72,69 @@ int printTable() {
     } else {
         printf("Surname\t\tPNum\tPType\tRAM\tCType\tVMem\tDType\tDNum\tDCap\tICNum\tPDNum\tOS\n");
         while (fread(&read, sizeof(pc), 1, data) != EOF && !feof(data)) {
-            printf("%s\t%d\t%s\t%d\t%s\t%d\t%s\t%d\t%d\t%d\t%d\t%s\n", read.surname, read.num_of_proc, read.type_of_proc, read.mem_size_ram, read.type_of_contr, read.mem_size_video_proc, read.type_of_disk, read.num_of_disc, read.cap_of_disc, read.num_of_intcontr, read.num_of_dev, read.os);
+            printf("%s\t%d\t%s\t%d\t%s\t%d\t%s\t%d\t%d\t%d\t%d\t%s\n", read.surname, read.num_of_proc, read.type_of_proc, read.mem_size_ram, read.type_of_contr, read.mem_size_video_proc, read.type_of_disk, read.num_of_disk, read.cap_of_disk, read.num_of_intcontr, read.num_of_dev, read.os);
+        }
+        fclose(data);
+    }
+}
+
+int delete() {
+    FILE *data;
+    char name[100];
+    printf("Enter file name\n");
+    scanf("%s", name);
+    data = fopen(name, "rb");
+    if (!data) {
+        return -1; // Если файл не найден
+    } else {
+        remove(name); // Удаление файла
+    }
+}
+
+int func(int p) {
+    pc find, select; // find - для поиска компьютеров, select - для хранения минимальных значений характеристик
+    char name[100];
+    FILE *data;
+    int count = 0;
+    printf("Enter file name\n");
+    scanf("%s", name);
+    data = fopen(name, "rb");
+    if (data == NULL) { // Если файл не найден
+        return -1;
+    } else {
+        data = fopen(name, "rb");
+
+        printf("Enter minimal number of proccesors\n");
+        scanf("%d", &select.num_of_proc);
+        printf("Enter minimal size of RAM, GB\n");
+        scanf("%d", &select.mem_size_ram);
+        printf("Enter minimal size of video memory, GB\n");
+        scanf("%d", &select.mem_size_video_proc);
+        printf("Enter minimal number of disks\n");
+        scanf("%d", &select.num_of_disk);
+        printf("Enter minimal capacity of disk, GB\n");
+        scanf("%d", &select.cap_of_disk);
+        printf("Enter minimal number of integrated controllers\n");
+        scanf("%d", &select.num_of_intcontr);
+        printf("Enter necessary OS\n");
+        scanf("%s", &select.os);
+
+        while (fread(&find, sizeof(pc), 1, data) != EOF && !feof(data)) { 
+            if ((find.num_of_proc < select.num_of_proc) || (find.mem_size_ram < select.mem_size_ram) || (find.mem_size_video_proc < select.mem_size_video_proc) || (find.num_of_disk < select.num_of_disk) || (find.cap_of_disk < select.cap_of_disk) | (find.num_of_intcontr < select.num_of_intcontr) || (!strcmp(find.os, select.os))) { // Если минимальные значения больше имеющихся
+                count ++;
+            }
+        }
+        if (count < p) { // Если слишком мало компютеров
+            fclose(data);
+            return -1;            
+        } else {
+            data = fopen(name, "rb");
+            printf("\nList of student which computers need to upgrade\n");
+            while (fread(&find, sizeof(pc), 1, data) != EOF && !feof(data)) { 
+                if (!((find.num_of_proc >= select.num_of_proc) && (find.mem_size_ram >= select.mem_size_ram) && (find.mem_size_video_proc >= select.mem_size_video_proc) && (find.num_of_disk >= select.num_of_dev) && (find.cap_of_disk >= select.cap_of_disk) && (find.num_of_intcontr >= select.num_of_intcontr) && (!strcmp(find.os, select.os) ))) { // Ищем компютеры, нуждающиеся в обновлении
+                    printf("\t%s\n", find.surname);
+                }
+            }
         }
         fclose(data);
     }
