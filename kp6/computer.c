@@ -4,7 +4,7 @@
 
 #include "computer.h"
 
-int create() {
+void create() {
     char name[100]; // Имя файла
     FILE *data; // Указатель на файл
     printf("Enter filename to create:\n");
@@ -24,7 +24,7 @@ int add() {
     pc rec; // Переменная типа 'pc' для записи характеристик компа
     printf("Enter a filename:\n");
     scanf("%s", name);
-    data = fopen(name, "rb");
+    data = fopen(name, "r");
 
     if (!data) {
         printf("File not found\n");
@@ -117,7 +117,7 @@ int func(int p) {
         printf("Enter minimal number of integrated controllers\n");
         scanf("%d", &select.num_of_intcontr);
         printf("Enter necessary OS\n");
-        scanf("%s", &select.os);
+        scanf("%s", select.os);
 
         while (fread(&find, sizeof(pc), 1, data) != EOF && !feof(data)) { 
             if ((find.num_of_proc < select.num_of_proc) || (find.mem_size_ram < select.mem_size_ram) || (find.mem_size_video_proc < select.mem_size_video_proc) || (find.num_of_disk < select.num_of_disk) || (find.cap_of_disk < select.cap_of_disk) | (find.num_of_intcontr < select.num_of_intcontr) || (!strcmp(find.os, select.os))) { // Если минимальные значения больше имеющихся
@@ -128,7 +128,7 @@ int func(int p) {
             fclose(data);
             return -1;            
         } else {
-            data = fopen(name, "rb");
+            data = fopen(name, "r");
             printf("\nList of student which computers need to upgrade\n");
             while (fread(&find, sizeof(pc), 1, data) != EOF && !feof(data)) { 
                 if (!((find.num_of_proc >= select.num_of_proc) && (find.mem_size_ram >= select.mem_size_ram) && (find.mem_size_video_proc >= select.mem_size_video_proc) && (find.num_of_disk >= select.num_of_dev) && (find.cap_of_disk >= select.cap_of_disk) && (find.num_of_intcontr >= select.num_of_intcontr) && (!strcmp(find.os, select.os) ))) { // Ищем компютеры, нуждающиеся в обновлении
@@ -137,5 +137,36 @@ int func(int p) {
             }
         }
         fclose(data);
+    }
+}
+
+void delete_student() {
+    FILE *f;
+    char name[100];
+    printf("Enter file name\n");
+    scanf("%s", name);
+    if ((f = fopen(name, "rb")) != NULL) {
+        char tmp[100];
+        printf("Enter delete name\n");
+        scanf("%s", tmp);
+        const int size = 1024;
+        char pattern[size];
+        fseek(f, 0, SEEK_END);
+        char *storyData = malloc((ftell(f) + 1) * sizeof(char));
+        char *ptr = storyData;
+        *ptr = 0;
+        fseek(f, 0, SEEK_SET);
+        while (fread(pattern,sizeof(char), size, f)) {
+            if (strstr(pattern, tmp) == NULL) {
+                strcat (ptr, pattern);
+                ptr += strlen(pattern);
+            }
+        }
+        fclose(f);
+        f = fopen(name, "w");
+        fputs(storyData, f);
+        fclose(f);
+
+        free(storyData);
     }
 }

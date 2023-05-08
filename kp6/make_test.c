@@ -24,7 +24,7 @@ int main(int argc, char const *argv[])
 	char name[100];
 	FILE *data;
 	scanf("%s", name);
-    data = fopen(name, "rb");
+    data = fopen(name, "r+");
     sscanf(argv[1], "%d", &p);
     for (int i = 0; i < p; ++i) {
     	pc ran;

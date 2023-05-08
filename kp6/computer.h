@@ -4,26 +4,29 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define MAX_LEN 50
+
 typedef struct _comp 
 {
-    char surname[50]; // Фамилия студента
+    char surname[MAX_LEN]; // Фамилия студента
     int num_of_proc; // Значение процессора
-    char type_of_proc[50]; // Тип процессора
+    char type_of_proc[MAX_LEN]; // Тип процессора
     int mem_size_ram; // Размер оперативной памяти
-    char type_of_contr[50]; // Тип плажки оперативы
+    char type_of_contr[MAX_LEN]; // Тип плажки оперативы
     int mem_size_video_proc; // Объем видеопамяти
-    char type_of_disk[50]; // Тип хранилища
+    char type_of_disk[MAX_LEN]; // Тип хранилища
     int num_of_disk; // Количество хранилищ
     int cap_of_disk; // Объем хранилища в Гб
     int num_of_intcontr; // Количество интерфейсных контроллеров
     int num_of_dev; // Количество устройств i/o
-    char os[50];
+    char os[MAX_LEN];
 } pc;
 
-int create();
+void create();
 int add();
 int printTable();
 int delete();
 int func(int p);
+void delete_student();
 
 #endif //_COMPUTER_H_
