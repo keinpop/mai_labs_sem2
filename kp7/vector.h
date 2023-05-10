@@ -3,14 +3,30 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
-typedef struct _vector 
-{
-    int *value;
-    size_t size;
+typedef double Item;
+
+typedef struct _vector {
+    int* begin;
+    int size;
+    int allocated;
 } Vector;
 
-void createV(Vector *vector, size_t size);
-void destroyV(Vector *vector);
+typedef struct _vector_m {
+    int row;
+} VectorM;
+
+typedef struct _element { // _vector_a
+    Item value;
+    int column;
+    int index_next;
+} Element;
+
+void readFile();
+void createV(Vector* v);
+void deleteV(Vector* v);
+void pushBackV(Vector* v, int value);
+void printV(Vector* v);
 
 #endif // __VECTOR_H__
