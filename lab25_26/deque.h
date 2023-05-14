@@ -15,7 +15,7 @@ typedef struct _deque_node {
 typedef struct _deque { 
     Deque_node *front;  
     Deque_node *back; 
-    size_t size; 
+    int size; 
 } Deque;
 
 

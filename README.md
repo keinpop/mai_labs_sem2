@@ -4,3 +4,5 @@
 **lab22** page 256-257  
 **lab23** VAR 11  
 **lab25_26** VAR D4 (Deque Bubble sort)
+**kp6** VAR 4
+**kp7** VAR 1 2
