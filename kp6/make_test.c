@@ -2,37 +2,25 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct comp
-{
-    char surname[50];
-    int num_of_proc;
-    char type_of_proc[50];
-    int mem_size_ram;
-    char type_of_contr[50];
-    int mem_size_video_proc;
-    char type_of_disk[50];
-    int num_of_disk;
-    int cap_of_disk;
-    int num_of_intcontr;
-    int num_of_dev;
-    char os[50];
-} pc;
+#include "computer.h"
+#include "serialization.h"
 
 int main(int argc, char const *argv[])
 {
 	int p, k, s, g, h;
 	char name[100];
-	FILE *data;
+	FILE *file;
 	scanf("%s", name);
-    data = fopen(name, "r+");
+    file = fopen(name, "r+");
     sscanf(argv[1], "%d", &p);
     for (int i = 0; i < p; ++i) {
     	pc ran;
+		memset(&ran, 0, sizeof(pc)); // Проинициализурем нулями. (Строки => нулевыми байтами, числа => нулём)
     	k = rand() % 2;
     	s = rand() % 2;
     	g = rand() % 2;
     	h = rand() % 2;
-    	data = fopen(name, "a");
+    	file = fopen(name, "a");
     	for (int i = 0; i < 10; ++i) {
     		ran.surname[i] = (char)(rand()%26+0x61);	
     	}
@@ -86,8 +74,8 @@ int main(int argc, char const *argv[])
     		ran.os[6] = 'w';
     		ran.os[7] = 's'; 
     	}
-    	fwrite(&ran, sizeof(pc), 1, data);
-        fclose(data);
+		studentWriteBin(&ran, file);
+        fclose(file);
     }
 	return 0;
 }
