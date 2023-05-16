@@ -73,7 +73,7 @@ void pushBackV(Vector* v, int value) {
     v->begin[v->size++] = value;
 }
 
-void insertValueVecA(VecA* va, int column, int value, int index) {
+void insertValueVecA(VecA* va, int column, Item value, int index) {
     if (va->size + 1 >= va->allocated) {
         va->allocated *= 2;
         va->begin = realloc(va->begin, sizeof(ElementA) * va->allocated);
@@ -103,7 +103,7 @@ void printVA(VecA* va) {
     printf("Vector A = ");
     for (int i = 0; i < va->size; i++) {
         printf("(%d;", va->begin[i].column);
-        printf("%d;", va->begin[i].value);
+        printf("%.1f;", va->begin[i].value);
         printf("%d) ", va->begin[i].index_next);
     }
     printf("\n");

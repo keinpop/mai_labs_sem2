@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-typedef double Item;
+typedef float Item;
 
 typedef struct _vector {
     int* begin;
@@ -20,8 +20,8 @@ typedef struct _vector_m {
 } VecM;
 
 typedef struct _element_a { // _vector_a
-    int value;
     int column;
+    Item value;
     int index_next;
 } ElementA;
 
@@ -42,7 +42,7 @@ void deleteVA(VecA* va);
 void deleteVM(VecM* vm);
 
 void pushBackV(Vector* v, int value);
-void insertValueVecA(VecA* va, int column, int value, int index);
+void insertValueVecA(VecA* va, int column, Item value, int index);
 void insertValueVecM(VecM* vm, int value);
 
 void printV(Vector* v);
