@@ -1,35 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <math.h>
 
 #include "vector.h"
-
-void readFile(FILE* file) {
-
-    int m = 0, n = 0; // Переменные колличества строк и столбцов
-    fscanf(file, "%d", &m);
-    fscanf(file, "%d", &n);
-
-    printf("%d - this i\n%d - this j\n", m, n);
-
-    int element[m][n];
-    for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                fscanf(file, "%d", &element[i][j]);
-                if (element[i][j] != 0) {
-                    printf("%d ", element[i][j]);
-                }
-            }
-    }
-    
-    
-    fclose(file);
-}
 
 void createV(Vector* v) {
     v->allocated = 1;
     v->size = 0;
     v->begin = malloc(v->allocated * sizeof(int));
+}
+
+int isEmpty(VecA *va) {
+    return va->size == 0;
 }
 
 void createVA(VecA* va) {
@@ -80,7 +63,7 @@ void insertValueVecA(VecA* va, int column, Item value, int index) {
     }
     va->begin[va->size].column = column;
     va->begin[va->size].value = value;
-    va->begin[va->size].index_next = index;
+    va->begin[va->size].indexNext = index;
     ++va->size;
 }
 
@@ -100,13 +83,15 @@ void printV(Vector* v) {
 }
 
 void printVA(VecA* va) {
-    printf("Vector A = ");
-    for (int i = 0; i < va->size; i++) {
-        printf("(%d;", va->begin[i].column);
-        printf("%.1f;", va->begin[i].value);
-        printf("%d) ", va->begin[i].index_next);
+    if (!isEmpty(&va)) {
+        printf("Vector A = ");
+        for (int i = 0; i < va->size; i++) {
+            printf("(%d;", va->begin[i].column);
+            printf("%.1f;", va->begin[i].value);
+            printf("%d) ", va->begin[i].indexNext);
+        }
+        printf("\n");
     }
-    printf("\n");
 }
 
 void printVM(VecM* vm) {
@@ -121,11 +106,23 @@ VecA copyFrom(VecA* va) {
     VecA copyVa;
     createVA(&copyVa);
     for (int i = 0; i < va->size; i++) {
-        insertValueVecA(&copyVa, va->begin[i].column, va->begin[i].value, va->begin[i].index_next);
+        insertValueVecA(&copyVa, va->begin[i].column, va->begin[i].value, va->begin[i].indexNext);
     }
     return copyVa;
 }
 
-int sizeV(Vector* v) {
-    return v->size;
+Item findMaxElementSparceMatrix(VecA* va) {
+    Item maxElem = 0.0; 
+    for (int i = 0; i < va->size; i++) {
+        if (maxElem < abs(va->begin[i].value)) {
+            maxElem = abs(va->begin[i].value);
+        }
+    }
+    return maxElem;
 }
+
+void divideSparceMatrixElem(VecA* va, Item maxElem) {
+    for (int i = 0; i < va->size; i++) {
+        va->begin[i].value /= maxElem;
+    }
+} 

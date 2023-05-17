@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <math.h>
 
 typedef float Item;
 
@@ -22,7 +23,7 @@ typedef struct _vector_m {
 typedef struct _element_a { // _vector_a
     int column;
     Item value;
-    int index_next;
+    int indexNext;
 } ElementA;
 
 typedef struct _vector_a {
@@ -51,6 +52,7 @@ void printVM(VecM* vm);
 
 VecA copyFrom(VecA* va);
 
-int sizeV(Vector* v);
+float findMaxElementSparceMatrix(VecA* va);
+void divideSparceMatrixElem(VecA* va, Item maxElem);
 
 #endif // __VECTOR_H__
