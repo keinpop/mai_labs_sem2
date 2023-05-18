@@ -7,12 +7,14 @@
 
 int main(int argc, char const *argv[])
 {
+    if (argc < 3) {
+        printf("CHECK:\n\t %s FILE_OUT NUMBERS_OF_STUDENTS\n", argv[0]);
+        exit(1);
+    }	
 	int p, k, s, g, h;
-	char name[100];
-	FILE *file;
-	scanf("%s", name);
-    file = fopen(name, "r+");
-    sscanf(argv[1], "%d", &p);
+	FILE* file;
+    file = fopen(argv[1], "r+");
+    sscanf(argv[2], "%d", &p);
     for (int i = 0; i < p; ++i) {
     	pc ran;
 		memset(&ran, 0, sizeof(pc)); // Проинициализурем нулями. (Строки => нулевыми байтами, числа => нулём)
@@ -20,59 +22,37 @@ int main(int argc, char const *argv[])
     	s = rand() % 2;
     	g = rand() % 2;
     	h = rand() % 2;
-    	file = fopen(name, "a");
+    	file = fopen(argv[1], "a");
     	for (int i = 0; i < 10; ++i) {
-    		ran.surname[i] = (char)(rand()%26+0x61);	
+    		ran.surname[i] = (char)(rand()%26 + 0x61);	
     	}
     	ran.num_of_proc = 2 + rand()%(12 - 2 + 1);
-    	if (k == 0) {
-    		ran.type_of_proc[0] = 'x';
-    		ran.type_of_proc[1] = '8';
-    		ran.type_of_proc[2] = '6'; 
-    	} else {
-    		ran.type_of_proc[0] = 'x';
-    		ran.type_of_proc[1] = '6';
-    		ran.type_of_proc[2] = '4'; 
-    	}
+		if (k == 0) {
+			strcpy(ran.type_of_proc, "x86");
+		} else {
+			strcpy(ran.type_of_proc, "x64");
+		}
     	ran.mem_size_ram = 2 + rand()%(64 - 2 + 1);
-    	if (s == 0) {
-    		ran.type_of_contr[0] = 'A';
-    		ran.type_of_contr[1] = 'G';
-    		ran.type_of_contr[2] = 'P'; 
-    	} else {
-    		ran.type_of_contr[0] = 'P';
-    		ran.type_of_contr[1] = 'C';
-    		ran.type_of_contr[2] = 'I'; 
-    	}
+		if (s == 0) {
+			strcpy(ran.type_of_contr, "AGP");
+		} else {
+			strcpy(ran.type_of_contr, "PCI");
+		}
     	ran.mem_size_video_proc = 2 + rand()%(3 - 2 + 1);
+
     	if (g == 0) {
-    		ran.type_of_disk[0] = 'S';
-    		ran.type_of_disk[1] = 'S';
-    		ran.type_of_disk[2] = 'D'; 
+			strcpy(ran.type_of_disk, "SSD");
     	} else {
-    		ran.type_of_disk[0] = 'H';
-    		ran.type_of_disk[1] = 'D';
-    		ran.type_of_disk[2] = 'D'; 
+			strcpy(ran.type_of_disk, "HDD");
     	}
     	ran.num_of_disk = 2 + rand()%(4 - 2 + 1);
     	ran.cap_of_disk = 128 + rand()%(1024);
     	ran.num_of_intcontr = 2 + rand()%(16 - 2 + 1);
     	ran.num_of_dev = 2 + rand()%(16 - 2 + 1);
     	if (h == 0) {
-    		ran.os[0] = 'U';
-    		ran.os[1] = 'b';
-    		ran.os[3] = 'u';
-    		ran.os[4] = 'n';
-    		ran.os[5] = 't';
-    		ran.os[6] = 'u'; 
+			strcpy(ran.os, "Ubuntu");
     	} else {
-    		ran.os[0] = 'W';
-    		ran.os[1] = 'i';
-    		ran.os[3] = 'n';
-    		ran.os[4] = 'd';
-    		ran.os[5] = 'o';
-    		ran.os[6] = 'w';
-    		ran.os[7] = 's'; 
+			strcpy(ran.os, "Windows");
     	}
 		studentWriteBin(&ran, file);
         fclose(file);

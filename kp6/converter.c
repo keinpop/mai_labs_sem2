@@ -8,7 +8,7 @@
 int main(int argc, char *argv[]) 
 {   
     if (argc != 4) {
-        printf("Usage:\n\t%s  FILE_FROM FILE_TO\n", argv[0]);
+        printf("Usage:\n\t%s  FILE_FROM FILE_TO [ttb] (txtToBin) | [btt] (BinToTxt)\n", argv[0]);
         exit(0);
     }
 

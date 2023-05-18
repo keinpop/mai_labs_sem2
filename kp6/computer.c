@@ -6,31 +6,21 @@
 #include "computer.h"
 #include "serialization.h"
 
-void create() {
-    char name[100]; // Имя файла
-    FILE *file; // Указатель на файл
-    printf("Enter filename to create:\n");
-    scanf("%s", name); // Вводим имя (& нет, тк ссылка на 1 элемент массива)
-    file = fopen(name, "a"); // Открыть файл на чтение
+void createFile(const char* filename) {
+    FILE* file = fopen(filename, "a");
     if (file != NULL) {
         fclose(file);
     }
 }
 
-int add() {
-    char name[100];
-    FILE *file;
+int addStud(const char* filename) {
     pc rec; // Переменная типа 'pc' для записи характеристик компа
-    printf("Enter a filename:\n");
-    scanf("%s", name);
-    file = fopen(name, "r");
-
+    FILE* file = fopen(filename, "ab");
     if (!file) {
         printf("File not found\n");
         return -1;
     }
-
-    file = fopen(name, "a");
+    memset(&rec, 0, sizeof(pc));
     printf("Enter a surname\n");
     scanf("%s", rec.surname);
     printf("Enter a number of processors\n");
@@ -41,7 +31,7 @@ int add() {
     scanf("%d", &rec.mem_size_ram);
     printf("Enter a type of controller\n");
     scanf("%s", rec.type_of_contr);
-    printf("Enter a video memmory size\n");
+    printf("Enter a video memory size\n");
     scanf("%d", &rec.mem_size_video_proc);
     printf("Enter a type of disk\n");
     scanf("%s", rec.type_of_disk);
@@ -51,24 +41,20 @@ int add() {
     scanf("%d", &rec.cap_of_disk);
     printf("Enter a number of integrated controllers\n");
     scanf("%d", &rec.num_of_intcontr);
-    printf("Enter a number of peripheral devises\n");
+    printf("Enter a number of peripheral devices\n");
     scanf("%d", &rec.num_of_dev);
     printf("Enter an OS\n");
     scanf("%s", rec.os);
 
     studentWriteBin(&rec, file);
     fclose(file);
+    return 0;
 }
 
-
-int printTable() {
-    FILE *file;
+int printTable(const char* filename) {
+    FILE* file = fopen(filename, "rb");
     pc read;
     memset(&read, 0, sizeof(pc));
-    char name[100];
-    printf("Enter a filename:\n");
-    scanf("%s", name);
-    file = fopen(name, "rb");
     if (!file) { // Если файл не найден
         return -1;
     } else {
@@ -81,36 +67,31 @@ int printTable() {
     }
 }
 
-int delete() {
-    FILE *file;
-    char name[100];
-    printf("Enter file name:\n");
-    scanf("%s", name);
-    file = fopen(name, "rb");
-    if (!file) {
-        return -1; // Если файл не найден
+int deleteFile(const char* filename) {
+    if (remove(filename) != 0) {
+        return -1;
     } else {
-        remove(name); // Удаление файла
+        return 0; // Удаление файла прошло успешно
     }
 }
 
 
-void delete_student() {
-    printf("Enter file name:\n");
-    FILE* file;
-    char name[100];
-    scanf("%s", name);
+void deleteStudent(const char* filename) {
+    FILE* file = fopen(filename, "rb");
+    if (!file) {
+        printf("File not found\n");
+        return;
+    }
     printf("Enter student surname:\n");
     char surname[100];
     scanf("%s", surname);
-    file = fopen(name, "rb");
     if (!file) {
         return;
     }  
     char tmp_name[100];
     FILE* tmp_file;
-    int name_lenght = strlen(name);
-    strcpy(tmp_name, name);
+    int name_lenght = strlen(filename);
+    strcpy(tmp_name, filename);
     tmp_name[name_lenght] = '_';
     tmp_name[name_lenght + 1] = '\0';
     tmp_file = fopen(tmp_name, "ab");
@@ -129,58 +110,64 @@ void delete_student() {
     fclose(tmp_file);
     fclose(file);
     
-    remove(file);
-    rename(tmp_name, name);
+    if (remove(filename) != 0) {
+        printf("Failed to delete file\n");
+        return;
+    }
+
+    if (rename(tmp_name, filename) != 0) {
+        printf("Failed to rename temporary file\n");
+        return;
+    }
 }
 
-int func(int p) {
-    pc find, select; // find - для поиска компьютеров, select - для хранения минимальных значений характеристик
+
+int func(int p, const char* filename) {
+    FILE* file = fopen(filename, "rb");
+    if (!file) {
+        return -1;
+    }
+    pc find, select;
     memset(&find, 0, sizeof(pc));
-    char name[100];
-    FILE *file;
     int count = 0;
-    printf("Enter file name\n");
-    scanf("%s", name);
-    file = fopen(name, "rb");
-    if (file == NULL) { // Если файл не найден
+    
+    printf("Enter minimal number of processors\n");
+    scanf("%d", &select.num_of_proc);
+    printf("Enter minimal size of RAM, GB\n");
+    scanf("%d", &select.mem_size_ram);
+    printf("Enter minimal size of video memory, GB\n");
+    scanf("%d", &select.mem_size_video_proc);
+    printf("Enter minimal number of disks\n");
+    scanf("%d", &select.num_of_disk);
+    printf("Enter minimal capacity of disk, GB\n");
+    scanf("%d", &select.cap_of_disk);
+    printf("Enter minimal number of integrated controllers\n");
+    scanf("%d", &select.num_of_intcontr);
+    printf("Enter necessary OS\n");
+    scanf("%s", select.os);
+    
+    while (studentReadBin(&find, file)) {
+        if ((find.num_of_proc < select.num_of_proc) || (find.mem_size_ram < select.mem_size_ram) || (find.mem_size_video_proc < select.mem_size_video_proc) || (find.num_of_disk < select.num_of_disk) || (find.cap_of_disk < select.cap_of_disk) || (find.num_of_intcontr < select.num_of_intcontr) || (!strcmp(find.os, select.os))) {
+            count++;
+        }
+        memset(&find, 0, sizeof(pc));
+    }
+    
+    fclose(file);
+
+    if (count < p) {
         return -1;
     } else {
-        file = fopen(name, "rb");
-
-        printf("Enter minimal number of proccesors\n");
-        scanf("%d", &select.num_of_proc);
-        printf("Enter minimal size of RAM, GB\n");
-        scanf("%d", &select.mem_size_ram);
-        printf("Enter minimal size of video memory, GB\n");
-        scanf("%d", &select.mem_size_video_proc);
-        printf("Enter minimal number of disks\n");
-        scanf("%d", &select.num_of_disk);
-        printf("Enter minimal capacity of disk, GB\n");
-        scanf("%d", &select.cap_of_disk);
-        printf("Enter minimal number of integrated controllers\n");
-        scanf("%d", &select.num_of_intcontr);
-        printf("Enter necessary OS\n");
-        scanf("%s", select.os);
-
-        while (studentReadBin(&find, file)) { 
-            if ((find.num_of_proc < select.num_of_proc) || (find.mem_size_ram < select.mem_size_ram) || (find.mem_size_video_proc < select.mem_size_video_proc) || (find.num_of_disk < select.num_of_disk) || (find.cap_of_disk < select.cap_of_disk) | (find.num_of_intcontr < select.num_of_intcontr) || (!strcmp(find.os, select.os))) { // Если минимальные значения больше имеющихся
-                count ++;
+        file = fopen(filename, "rb");
+        printf("\nList of students whose computers need to be upgraded:\n");
+        while (studentReadBin(&find, file)) {
+            if (!((find.num_of_proc >= select.num_of_proc) && (find.mem_size_ram >= select.mem_size_ram) && (find.mem_size_video_proc >= select.mem_size_video_proc) && (find.num_of_disk >= select.num_of_disk) && (find.cap_of_disk >= select.cap_of_disk) && (find.num_of_intcontr >= select.num_of_intcontr) && (!strcmp(find.os, select.os)))) {
+                printf("\t%s\n", find.surname);
             }
             memset(&find, 0, sizeof(pc));
         }
-        if (count < p) { // Если слишком мало компютеров
-            fclose(file);
-            return -1;            
-        } else {
-            file = fopen(name, "r");
-            printf("\nList of student which computers need to upgrade\n");
-            while (studentReadBin(&find, file)) { 
-                if (!((find.num_of_proc >= select.num_of_proc) && (find.mem_size_ram >= select.mem_size_ram) && (find.mem_size_video_proc >= select.mem_size_video_proc) && (find.num_of_disk >= select.num_of_dev) && (find.cap_of_disk >= select.cap_of_disk) && (find.num_of_intcontr >= select.num_of_intcontr) && (!strcmp(find.os, select.os) ))) { // Ищем компютеры, нуждающиеся в обновлении
-                    printf("\t%s\n", find.surname);
-                }
-                memset(&find, 0, sizeof(pc));
-            }
-        }
         fclose(file);
     }
+
+    return 0;
 }

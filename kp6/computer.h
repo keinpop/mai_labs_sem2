@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <errno.h>
 
 #define MAX_LEN 50
 
@@ -22,11 +24,11 @@ typedef struct _comp
     char os[MAX_LEN];
 } pc;
 
-void create();
-int add();
-int printTable();
-int delete();
-int func(int p);
-void delete_student();
+void createFile(const char* filename);
+int addStud(const char* filename);
+int printTable(const char* filename);
+int deleteFile(const char* filename);
+int func(int p, const char* filename);
+void deleteStudent(const char* filename);
 
 #endif //_COMPUTER_H_
