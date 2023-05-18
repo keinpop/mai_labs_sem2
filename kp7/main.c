@@ -4,6 +4,7 @@
 #include <math.h>
 
 #include "vector.h"
+#include "sparce_matrix.h"
 
 // m - КОЛИЧЕСТВО СТРОК, n - КОЛИЧЕСТВО СТОЛБЦОВ!!!
 void AddedElementVectorA(VecA* va, FILE* file) {
@@ -115,8 +116,6 @@ int main(int argc, char* argv[])
         printf("Usage:\n\t%s  FILE_FROM\n", argv[0]);
         exit(0);
     } else { 
-        char filename[50];
-        argv[2] = filename[50];
         FILE* file = fopen(argv[1], "r");
 
         FILE* tmpFile = fopen(argv[1], "r");
