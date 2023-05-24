@@ -7,3 +7,4 @@
 **kp6** VAR 4
 **kp7** VAR 1 2
 **kp8** VAR 3(enum) 2(list) 2(delElem)
+test
