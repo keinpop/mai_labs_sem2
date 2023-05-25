@@ -22,4 +22,13 @@ typedef struct _list {
     size_t size;
 } List;
 
+void initList(List* list);
+int isEmpty(List* list);
+void pushFront(List* list, color clr);
+void insertIndex(List* list, color clr, int index);
+void popIndex(List* list, int index);
+void printList(List* list);
+void deleteList(List* list);
+void foundElementDeleteList(List* list, color foundElement);
+
 #endif // __LIST_H__
