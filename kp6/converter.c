@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
     FILE *in = fopen(argv[1], "r");
     FILE *out = fopen(argv[2], "w");
 
-    if(!in || !out) {
+    if (!in || !out) {
         printf("I/O Error: can't open file.\n");
         exit(1);
     }

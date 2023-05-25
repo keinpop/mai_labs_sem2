@@ -7,7 +7,7 @@
 
 int main(int argc, char const *argv[])
 {
-    if (argc < 3) {
+    if (argc != 3) {
         printf("CHECK:\n\t %s FILE_OUT NUMBERS_OF_STUDENTS\n", argv[0]);
         exit(1);
     }	
@@ -28,6 +28,7 @@ int main(int argc, char const *argv[])
     	}
     	ran.num_of_proc = 2 + rand()%(12 - 2 + 1);
 		if (k == 0) {
+			
 			strcpy(ran.type_of_proc, "x86");
 		} else {
 			strcpy(ran.type_of_proc, "x64");

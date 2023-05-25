@@ -75,7 +75,6 @@ int deleteFile(const char* filename) {
     }
 }
 
-
 void deleteStudent(const char* filename) {
     FILE* file = fopen(filename, "rb");
     if (!file) {

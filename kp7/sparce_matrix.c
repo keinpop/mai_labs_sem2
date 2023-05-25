@@ -73,6 +73,7 @@ void printVM(VecM* vm) {
     }
     printf(")\n");
 }
+
 VecA copyFrom(VecA* va) {
     VecA copyVa;
     createVA(&copyVa);
