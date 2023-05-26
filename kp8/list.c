@@ -12,6 +12,43 @@ int isEmpty(List* list) { // Возвращает 1, если пустой
     return list->size == 0;
 }
 
+color convertColor(char* str) {
+    if ((!strcmp(str, "Red")) || (!strcmp(str, "red"))) {
+        return Red;
+    } else if ((!strcmp(str, "Green")) || (!strcmp(str, "green"))) {
+        return Green;
+    } else if ((!strcmp(str, "Blue")) || (!strcmp(str, "blue"))) {
+        return Blue;
+    } else if ((!strcmp(str, "Yellow")) || (!strcmp(str, "yellow"))) {
+        return Yellow;
+    } else if ((!strcmp(str, "Black")) || (!strcmp(str, "black"))) {
+        return Black;
+    } else {
+        printf("This color is not in the enum list. Please enter a valid color.\n");
+        return -1;  // Возвращаем недопустимое значение, чтобы обозначить ошибку
+    }
+}
+
+char* convertEnum(color clr) {
+    switch (clr)
+    {
+    case 0:
+        return "Red";
+        break;
+    case 1:
+        return "Green";
+        break;
+    case 2:
+        return "Blue";
+        break;
+    case 3:
+        return "Yellow";
+        break;
+    case 4:
+        return "Black";
+    }
+}
+
 void pushFront(List* list, color clr) {
     List_node* listNode = malloc(sizeof(List_node));
     listNode->next = NULL;
@@ -50,7 +87,7 @@ void insertIndex(List* list, color clr, int index) {
 }
 
 void popIndex(List* list, int index) {
-    if (index > list->size || index < 0) {
+    if (index >= list->size || index < 0) {
         printf("\tOut of bounds list\n");
         return;
     }
@@ -72,7 +109,8 @@ void popIndex(List* list, int index) {
         }    
         prev->next = tmp->next;
     }
-    printf("\tRemoved element: %d\n", tmp->value);
+    char res = convertEnum(tmp->value); 
+    printf("\tRemoved element: %s\n", res);
     free(tmp);
     if (prev != NULL) {
         free(prev);
@@ -91,7 +129,8 @@ void printList(List* list) {
 
     printf("\tList:\n");
     for (int i = 0; i < list->size; i++) {
-        printf("%d\t", tmp->value);
+        char* res = convertEnum(tmp->value);
+        printf("%s\t", res);
         tmp = tmp->next;
     }
     printf("\n");
