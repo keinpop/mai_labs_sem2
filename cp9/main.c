@@ -1,7 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
 
-typedef struct _row {
-    char key[5];
-    char string[100];
-} Row;
+#include "vector_str.h"
+
+int main(int argc, char* argv[])
+{
+
+
+    return 0;
+}
