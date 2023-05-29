@@ -5,7 +5,7 @@
 
 #include "vector_str.h"
 
-void createVec(Vector* vec, size_t size) {
+void createVec(Vector* vec, int size) {
     vec->size = size;
     vec->value = malloc(size * sizeof(Row));
     
@@ -37,8 +37,8 @@ void addVec(Vector* vec, int index, Row value) {
     }
 }
 
-void resizeVec(Vector* vec, size_t size) {
-    Row* newRow = malloc(size * sizeof(Row));
+void resizeVec(Vector* vec, int size) {
+    Row* newRow = realloc(vec->value, size * sizeof(Row));
     vec->value = newRow;
     vec->size = size;
 }
@@ -55,7 +55,7 @@ void printTable(Vector* vec) {
     printf("|--------------------------------------------|\n");
     for (int i = 0; i < vec->size; i++) {
         Row tmp = getVecElem(vec, i);
-        printf("| %6s | %-41s \n");
+        printf("| %6s | %-41s \n", tmp.key, tmp.string);
     }
     printf("|--------------------------------------------|\n");    
 }

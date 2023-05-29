@@ -6,21 +6,24 @@
 #include <string.h>
 #include <stdbool.h>
 
+#define STRSIZE 100
+
 typedef struct _row {
     char key[6];
-    char string[100];
+    char string[STRSIZE];
 } Row;
 
 typedef struct _vector {
     Row* value;
-    size_t size;
+    int size;
 } Vector;
 
-void createVec(Vector* vec, size_t size);
+void createVec(Vector* vec, int size);
 int isEmpty(Vector* vec);
+int sizeVector(Vector* v);
 Row getVecElem(Vector* vec, int index);
 void addVec(Vector* vec, int index, Row value);
-void resizeVec(Vector* vec, size_t size);
+void resizeVec(Vector* vec, int size);
 void deleteVec(Vector* vec);
 void printTable(Vector* vec);
 int compareKeys(Row first, Row second);
