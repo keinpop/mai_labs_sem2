@@ -94,7 +94,9 @@ int main(int argc, char* argv[])
         } else if (!strcmp(str, "help")) {
             helpBoard();
         } else if (!strcmp(str, "sort")) {
-            //Sort
+            mergeSort(table);
+            printf("Table as sorted:\n");
+            printTable(table);
         } else if (!strcmp(str, "findstr")) {
             if (checkSortTableDescending(table)) {
                 Vector* reverseTable = malloc(sizeof(Vector));

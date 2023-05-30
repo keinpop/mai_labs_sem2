@@ -28,7 +28,7 @@ void deleteVec(Vector* vec);
 void printTable(Vector* vec);
 int compareKeys(Row first, Row second);
 
-// sort
+void mergeSort(Vector* vec);
 
 Row binarySearch(Vector* table, char key[6]);
 

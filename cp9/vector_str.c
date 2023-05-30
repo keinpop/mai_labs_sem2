@@ -64,6 +64,46 @@ int compareKeys(Row first, Row second) {
     return strcmp(first.key, second.key);
 }
 
+void mergeSort(Vector* vec) {
+    int size = vec->size;
+    Row* arr = vec->value;
+    Row* tmp = malloc(size * sizeof(Row));
+    int h;
+
+    for (h = 1; h < size; h *= 2) {
+        for (int left = 0; left + h < size; left += h * 2) {
+            int mid = left + h;
+            int right = mid + h;
+            if (right > size) right = size;
+            int i = left;
+            int j = mid;
+            int k = left;
+
+            while (i < mid && j < right) {
+                if (strcmp(arr[i].key, arr[j].key) <= 0) {
+                    memcpy(&tmp[k++], &arr[i++], sizeof(Row));
+                } else {
+                    memcpy(&tmp[k++], &arr[j++], sizeof(Row));
+                }
+            }
+
+            while (i < mid) {
+                memcpy(&tmp[k++], &arr[i++], sizeof(Row));
+            }
+
+            while (j < right) {
+                memcpy(&tmp[k++], &arr[j++], sizeof(Row));
+            }
+
+            for (int m = left; m < right; m++) {
+                memcpy(&arr[m], &tmp[m], sizeof(Row));
+            }
+        }
+    }
+
+    free(tmp);
+}
+
 Row binarySearch(Vector* table, char key[6]) {
     int left = 0;
     int right = table->size - 1;
