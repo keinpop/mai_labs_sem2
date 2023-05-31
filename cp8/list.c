@@ -3,12 +3,12 @@
 
 #include "list.h"
 
-void initList(List* list) {
+void listInit(List* list) {
     list->front = NULL;
     list->size = 0;
 }
 
-int isEmpty(List* list) { // Возвращает 1, если пустой
+int listIsEmpty(List* list) { // Возвращает 1, если пустой
     return list->size == 0;
 }
 
@@ -49,7 +49,7 @@ char* convertEnum(color clr) {
     }
 }
 
-void pushFront(List* list, color clr) {
+void listPushFront(List* list, color clr) {
     List_node* listNode = malloc(sizeof(List_node));
     listNode->next = NULL;
     listNode->value = clr;
@@ -63,7 +63,7 @@ void pushFront(List* list, color clr) {
     list->size++;
 }
 
-void insertIndex(List* list, color clr, int index) {
+void listInsertIndex(List* list, color clr, int index) {
     if (index > list->size || index < 0) {
         printf("\tOut of bounds list\n");
         return;
@@ -86,13 +86,13 @@ void insertIndex(List* list, color clr, int index) {
     list->size++;
 }
 
-void popIndex(List* list, int index) {
+void listPopIndex(List* list, int index) {
     if (index >= list->size || index < 0) {
         printf("\tOut of bounds list\n");
         return;
     }
 
-    if (isEmpty(list)) {
+    if (listIsEmpty(list)) {
         printf("\tList is empty\n");
         return;
     }
@@ -109,7 +109,8 @@ void popIndex(List* list, int index) {
         }    
         prev->next = tmp->next;
     }
-    char res = convertEnum(tmp->value); 
+
+    char* res = convertEnum(tmp->value); 
     printf("\tRemoved element: %s\n", res);
     free(tmp);
     if (prev != NULL) {
@@ -119,8 +120,8 @@ void popIndex(List* list, int index) {
     list->size--;
 }
 
-void printList(List* list) {
-    if (isEmpty(list)) {
+void listPrintout(List* list) {
+    if (listIsEmpty(list)) {
         printf("\tList is empty\n");
         return;
     }
@@ -133,11 +134,12 @@ void printList(List* list) {
         printf("%s\t", res);
         tmp = tmp->next;
     }
+    free(tmp);
     printf("\n");
 }
 
-void deleteList(List* list) {
-    if (isEmpty(list)) {
+void listRemove(List* list) {
+    if (listIsEmpty(list)) {
         printf("\tList is empty\n");
         return;
     }
@@ -152,8 +154,8 @@ void deleteList(List* list) {
     list->size = 0;
 }
 
-void foundElementDeleteList(List* list, color foundElement) {
-    if (isEmpty(list)) {
+void listFoundElementDelete(List* list, color foundElement) {
+    if (listIsEmpty(list)) {
         printf("\tList is empty\n");
         return;
     }
@@ -162,7 +164,7 @@ void foundElementDeleteList(List* list, color foundElement) {
 
     while (tmp != NULL) {
         if (tmp->value == foundElement) {
-            deleteList(list);
+            listRemove(list);
             printf("\tElement was finded! List was deleted\n");
             return;
         } 

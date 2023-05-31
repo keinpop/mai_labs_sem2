@@ -22,7 +22,7 @@ void helpBoard() {
 int main() 
 {
     List list;
-    initList(&list);
+    listInit(&list);
     
     char str[9];
     helpBoard();
@@ -31,7 +31,7 @@ int main()
         printf("Enter command: ");
         scanf("%8s", str);  
         if (!strcmp(str, "exit")) {
-            deleteList(&list);
+            listRemove(&list);
             exit (1);
         } else if (!strcmp(str, "help")) {
             helpBoard();
@@ -41,7 +41,7 @@ int main()
             scanf("%s", stringColor);
             color clr = convertColor(stringColor);
             if (clr != -1) {
-                pushFront(&list, clr);
+                listPushFront(&list, clr);
             }
         } else if (!strcmp(str, "insind")) {
             printf("Enter the index of the element to be added: ");
@@ -52,23 +52,23 @@ int main()
             scanf("%s", stringColor);
             color clr = convertColor(stringColor);
             if (clr != -1) {
-                insertIndex(&list, clr, index);
+                listInsertIndex(&list, clr, index);
             }
         } else if (!strcmp(str, "popind")) {
             printf("Enter the index of the element to delete: ");
             int index;
             scanf("%d", &index);
-            popIndex(&list, index);
+            listPopIndex(&list, index);
         } else if (!strcmp(str, "print")) {
-            printList(&list);
+            listPrintout(&list);
         } else if (!strcmp(str, "dellist")) {
-            deleteList(&list);
+            listRemove(&list);
         } else if (!strcmp(str, "vartask")) {
             printf("Enter the color to be found: ");
             char colorString[10];
             scanf("%s", colorString);
             color clr = convertColor(colorString);
-            foundElementDeleteList(&list, clr);
+            listFoundElementDelete(&list, clr);
         } else {
             printf("Unknown command\n");
         }
