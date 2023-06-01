@@ -25,7 +25,7 @@ void rewriteFile(const char* filenamePoem, const char* filenameKey, Vector* tabl
     }
 
     for (int i = 0; i < table->size; i++) {
-        Row tmp = getVecElem(table, i);
+        Row tmp = vecGetElem(table, i);
         fprintf(fileK, "%s\n", tmp.key);
         fprintf(fileP, "%s\n", tmp.string);
     }
@@ -36,12 +36,12 @@ void rewriteFile(const char* filenamePoem, const char* filenameKey, Vector* tabl
 int main(int argc, char* argv[])
 {
     if (argc != 3) {
-        printf("\tUsage:\n%s FILE_POEM FILE_KEY\n", argv[0]);
+        printf("\tUsage:\n%s FILE_KEY FILE_POEM\n", argv[0]);
         return 1;
     }
 
-    FILE* filePoem = fopen(argv[1], "r");
-    FILE* fileKey = fopen(argv[2], "r");
+    FILE* fileKey = fopen(argv[1], "r");
+    FILE* filePoem = fopen(argv[2], "r");
 
     if (filePoem == NULL && fileKey == NULL) {
         printf("Error! File was not open\n");
@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
     }
 
     Vector* table = malloc(sizeof(Vector));
-    createVec(table, 0);
+    vecCreate(table, 0);
 
     char strPoem[STRSIZE];
     char strKey[7];
@@ -62,8 +62,8 @@ int main(int argc, char* argv[])
         Row element;
         strcpy(element.key, key); // добавляем ключ к элементу
         strcpy(element.string, string); // добавляем строку стихотворения к элементу
-        resizeVec(table, table->size + 1);
-        addVec(table, table->size - 1, element); 
+        vecResize(table, table->size + 1);
+        vecAddElem(table, table->size - 1, element); 
     }
 
     fclose(fileKey);
@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
     printf("|   KEY   | STRING                            \n");
     printf("|--------------------------------------------|\n");
     for (int i = 0; i < table->size; i++) {
-        Row tmp = getVecElem(table, i);
+        Row tmp = vecGetElem(table, i);
         printf("| %6s | %-41s \n", tmp.key, tmp.string);
     }
     printf("|--------------------------------------------|\n");
@@ -88,7 +88,7 @@ int main(int argc, char* argv[])
         scanf("%8s", str);
         
         if (!strcmp(str, "exit")) {
-            deleteVec(table);
+            vecRemove(table);
             free(table);
             return 0;
         } else if (!strcmp(str, "help")) {
@@ -96,35 +96,35 @@ int main(int argc, char* argv[])
         } else if (!strcmp(str, "sort")) {
             mergeSort(table);
             printf("Table as sorted:\n");
-            printTable(table);
+            vecPrintTable(table);
         } else if (!strcmp(str, "findstr")) {
-            if (checkSortTableDescending(table)) {
+            if (vecCheckSortTableDescending(table)) {
                 Vector* reverseTable = malloc(sizeof(Vector));
-                createVec(reverseTable, table->size);
-                vectorReverse(table, reverseTable);
+                vecCreate(reverseTable, table->size);
+                vecReverse(table, reverseTable);
                 printf("Enter key:\n");
                 scanf("%5s", find);
-                if (strcmp(binarySearch(reverseTable, find).key, "")) {
-                    printf("| %6s | %s \n", binarySearch(reverseTable, find).key, binarySearch(reverseTable, find).string);
+                if (strcmp(vecBinarySearch(reverseTable, find).key, "")) {
+                    printf("| %6s | %s \n", vecBinarySearch(reverseTable, find).key, vecBinarySearch(reverseTable, find).string);
                 } else {
                     printf("Key was not finded\n");    
                 }
-                deleteVec(reverseTable);
+                vecRemove(reverseTable);
                 free(reverseTable);
-            } else if (checkSortTable(table) == 0) { // Если таблица не отсортирована
+            } else if (vecCheckSortTable(table) == 0) { // Если таблица не отсортирована
                 printf("Sort the table first\n");
             } else {
                 printf("Enter key:\n");
                 scanf("%5s", find);
 
-                if (strcmp(binarySearch(table, find).key, "")) {
-                    printf("| %6s | %s \n", binarySearch(table, find).key, binarySearch(table, find).string);
+                if (strcmp(vecBinarySearch(table, find).key, "")) {
+                    printf("| %6s | %s \n", vecBinarySearch(table, find).key, vecBinarySearch(table, find).string);
                 } else {
                     printf("Key was not finded\n");
                 }
             }
         } else if (!strcmp(str, "print")) {
-            printTable(table);
+            vecPrintTable(table);
         } else if (!strcmp(str, "rewrtf")) {
             rewriteFile(argv[1], argv[2], table);
             printf("File was rewrited\n");
