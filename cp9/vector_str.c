@@ -104,7 +104,7 @@ void mergeSort(Vector* vec) {
     free(tmp);
 }
 
-Row vecBinarySearch(Vector* table, char key[6]) {
+Row vecBinarySearch(Vector* table, char key[6]) { // Сделать 2ой вариант поиска
     int left = 0;
     int right = table->size - 1;
     int middle;
