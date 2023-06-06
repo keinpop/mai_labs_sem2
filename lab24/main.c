@@ -34,6 +34,7 @@ int main()
     printf("\nTree's infix linearization:\n");
     treeInfix(tree);
     printf("\n");
+    treeDelete(&tree);
 
     return 0;
 }
