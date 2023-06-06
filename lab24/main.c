@@ -21,6 +21,11 @@ int main()
         tokenNext(&token);
     }
 
+    if (tokens[1].type == FINAL) {
+        printf("\nExpression is empty\n");
+        return 0;
+    }
+
     Tree tree = treeCreate(tokens, 0, tokensQty - 1); // Создания дерева выражения
 
     printf("\nExpression tree:\n");
