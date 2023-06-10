@@ -12,32 +12,32 @@ void transform(Tree* t) {
     if (*t == NULL) {
         return;
     }
-    if ((*t)->node.data.operatorName == '*' && (*t)->left->node.data.operatorName == '/' && (*t)->right->node.data.operatorName == '/') {
+    if ((*t)->node.type == OPERATOR && (*t)->node.data.operatorName == '*' && (*t)->left->node.type == OPERATOR && (*t)->left->node.data.operatorName == '/' && (*t)->right->node.type == OPERATOR && (*t)->right->node.data.operatorName == '/') {
         (*t)->node.data.operatorName = '/';
         (*t)->left->node.data.operatorName = '*';
         (*t)->right->node.data.operatorName = '*';
-        swapNode((*t)->left->right, (*t)->right->left);
+        swapNode(&((*t)->left->right), &((*t)->right->left));
     }
 
-    else if ((*t)->node.data.operatorName == '*' && (*t)->left->node.data.operatorName == '*' && (*t)->left->right->node.data.operatorName == '/' && (*t)->right->node.data.operatorName == '/') {
+    else if ((*t)->node.type == OPERATOR && (*t)->node.data.operatorName == '*' && (*t)->left->node.type == OPERATOR && (*t)->left->node.data.operatorName == '*' && (*t)->left->right->node.type == OPERATOR && (*t)->left->right->node.data.operatorName == '/' && (*t)->right->node.type == OPERATOR && (*t)->right->node.data.operatorName == '/') {
         (*t)->node.data.operatorName = '/';
         (*t)->left->right->node.data.operatorName = '*';
         (*t)->right->node.data.operatorName = '*';
-        swapNode((*t)->left->right->right, (*t)->right->left);
+        swapNode(&((*t)->left->right->right), &((*t)->right->left));
     }
 
-    else if ((*t)->node.data.operatorName == '*' && (*t)->left->node.data.operatorName == '*' && (*t)->left->left->node.data.operatorName == '*' && (*t)->left->left->right->node.data.operatorName == '/' && (*t)->right->node.data.operatorName == '/') {
+    else if ((*t)->node.type == OPERATOR && (*t)->node.data.operatorName == '*' && (*t)->left->node.type == OPERATOR && (*t)->left->node.data.operatorName == '*' && (*t)->left->left->node.type == OPERATOR && (*t)->left->left->node.data.operatorName == '*' && (*t)->left->left->right->node.type == OPERATOR && (*t)->left->left->right->node.data.operatorName == '/' && (*t)->right->node.type == OPERATOR && (*t)->right->node.data.operatorName == '/') {
         (*t)->left->left->right->node.data.operatorName = '*';
         (*t)->right->node.data.operatorName = '*';
         (*t)->node.data.operatorName = '/';
-        swapNode((*t)->left->left->right->right, (*t)->right->left);
+        swapNode(&((*t)->left->left->right->right), &((*t)->right->left));
     }
 
-    else if ((*t)->node.data.operatorName == '*' && (*t)->left->node.data.operatorName == '*' && (*t)->left->left->node.data.operatorName == '*' && (*t)->left->left->left->node.data.operatorName == '/' && (*t)->left->right->node.data.operatorName == '/') {
+    else if ((*t)->node.type == OPERATOR && (*t)->node.data.operatorName == '*' && (*t)->left->node.type == OPERATOR && (*t)->left->node.data.operatorName == '*' && (*t)->left->left->node.type == OPERATOR && (*t)->left->left->node.data.operatorName == '*' && (*t)->left->left->left->node.type == OPERATOR && (*t)->left->left->left->node.data.operatorName == '/' && (*t)->left->right->node.type == OPERATOR && (*t)->left->right->node.data.operatorName == '/') {
         (*t)->left->left->left->node.data.operatorName = '*';
         (*t)->left->right->node.data.operatorName = '*';
         (*t)->left->node.data.operatorName = '/';
-        swapNode((*t)->left->left->left->right, (*t)->left->right->left);
+        swapNode(&((*t)->left->left->left->right), &((*t)->left->right->left));
     }
 }
 
@@ -49,3 +49,4 @@ void treeTransform(Tree* t) {
         transform(t);
     }
 }
+
