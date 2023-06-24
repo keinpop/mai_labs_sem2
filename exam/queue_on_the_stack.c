@@ -3,6 +3,7 @@
 
 typedef int Item; // Тип данных элементов стэка
 
+// Реализация стэка
 typedef struct _node { // Создаем структуру узла стэка
     Item data; // Поле значения
     struct _node* prev; // Указатель на следующий узел
@@ -47,15 +48,6 @@ Item stackPopBack(Stack* stack) { // Функция вытаскивания и�
     }
 }
 
-void stackPrint(Stack* stack) { // Функция печати стэка
-    Node* tmp = stack->last; // Временная переменная узла
-    while (tmp != NULL) { // Пока последний элемент не пустой
-        printf("%d\t", tmp->data); // Печать
-        tmp = tmp->prev; // Двигаемся по стеку
-    }
-    printf("\n");
-}
-
 void stackRemove(Stack* stack) {
     if (stackIsEmpty(stack)) {
         return;
@@ -71,41 +63,82 @@ void stackRemove(Stack* stack) {
     stack->last = NULL;
 }
 
-void stackInsertSort(Stack* stack) { // Функция сортировки вставкой
-    Stack tmpStack; // Создаем временный стэк
-    stackInit(&tmpStack); // Инициализируем в памяти его
+void stackPrint(Stack* stack) { // Функция печати стэка
+    Node* tmp = stack->last; // Временная переменная узла
+    while (tmp != NULL) { // Пока последний элемент не пустой
+        printf("%d\t", tmp->data); // Печать
+        tmp = tmp->prev; // Двигаемся по стеку
+    }
+    printf("\n");
+}
 
-    while (!stackIsEmpty(stack)) { // Пока стэк не пуст
-        Item tmp = stackPopBack(stack); // Переменная, хронящая в себе вытащенный элемент 
-        while (!(stackIsEmpty(&tmpStack)) && stackTop(&tmpStack) > tmp) { // Пока ВС не пуст и верхушка его больше вытащенного элемента
-            stackPushBack(stack, stackPopBack(&tmpStack)); // Вставляем в стэк элементы временного
-        }
-        stackPushBack(&tmpStack, tmp); // Засовываем в ВС элементы из нашего стэка
+// Реализация очереди на стэке
+typedef struct _queue {
+    Stack* stack;
+    size_t size;
+} Queue;
+
+void queueInit(Queue* q) {
+    q->stack = (Stack*)malloc(sizeof(Stack)); // Выделяем память для стека
+    stackInit(q->stack); // Инициализируем стек
+    q->size = 0;
+}
+
+int queueIsEmpty(Queue* q) {
+    return stackIsEmpty(q->stack) == 0;
+}
+
+size_t queueSize(Queue* q) {
+    return q->size;
+}
+
+void queuePushBack(Queue* q, Item value) {
+    q->size++;
+    return stackPushBack(q->stack, value);
+}
+
+void queuePopFront(Queue* q) {
+    Stack tmpStack;
+    stackInit(&tmpStack);
+
+    for (int i = 0; i < queueSize(q) - 1; i++) {
+        stackPushBack(&tmpStack, stackPopBack(q->stack));
     }
 
-    while (!stackIsEmpty(&tmpStack)) {
-        stackPushBack(stack, stackPopBack(&tmpStack)); // Переносим из временного в наш
+    stackPopBack(q->stack);
+    q->size--;
+    for (int i = 0; i < queueSize(q); i++) {
+        stackPushBack(q->stack, stackPopBack(&tmpStack));
     }
+
+}
+
+void queuePrint(Queue* q) {
+    if (stackIsEmpty(q->stack))
+        return;
+    return stackPrint(q->stack);    
+}
+
+void queueRemove(Queue* q) {
+    stackRemove(q->stack);
+    q->size = 0;
+    free(q->stack);
 }
 
 int main()
 {
-    Stack stack;
-    stackInit(&stack);
-
-    Item a = 5, b = 3, c = 1, d = 9, e = 6;
-    stackPushBack(&stack, c);
-    stackPushBack(&stack, a);
-    stackPushBack(&stack, b);
-    stackPushBack(&stack, d);
-    stackPushBack(&stack, e);
-    printf("\tИзначальный стэк:\n");
-    stackPrint(&stack);
-
-    stackInsertSort(&stack);
-    printf("\tСтэк после сортировки:\n");
-    stackPrint(&stack);
-    stackRemove(&stack);
+    Queue q;
+    queueInit(&q);
+    Item a = 1, b = 2, c = 3;
+    queuePushBack(&q, a);
+    queuePushBack(&q, b);
+    queuePushBack(&q, c);
+    queuePrint(&q);
+    queuePopFront(&q);
+    queuePrint(&q);
+    queuePushBack(&q, a);
+    queuePrint(&q);
+    queueRemove(&q);
 
     return 0;
 }
