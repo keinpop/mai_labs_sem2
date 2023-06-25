@@ -97,7 +97,7 @@ void queuePushBack(Queue* q, Item value) {
     return stackPushBack(q->stack, value);
 }
 
-void queuePopFront(Queue* q) {
+Item queuePopFront(Queue* q) {
     Stack tmpStack;
     stackInit(&tmpStack);
 
@@ -105,12 +105,13 @@ void queuePopFront(Queue* q) {
         stackPushBack(&tmpStack, stackPopBack(q->stack));
     }
 
-    stackPopBack(q->stack);
+    Item popElem = stackPopBack(q->stack);
     q->size--;
     for (int i = 0; i < queueSize(q); i++) {
         stackPushBack(q->stack, stackPopBack(&tmpStack));
     }
 
+    return popElem;
 }
 
 void queuePrint(Queue* q) {
