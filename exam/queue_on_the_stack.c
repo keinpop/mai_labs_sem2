@@ -111,6 +111,7 @@ Item queuePopFront(Queue* q) {
         stackPushBack(q->stack, stackPopBack(&tmpStack));
     }
 
+    stackRemove(&tmpStack);
     return popElem;
 }
 

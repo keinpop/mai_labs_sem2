@@ -116,13 +116,36 @@ int main()
     while ((c = getchar()) != EOF) {
         if (c == '0' || c == '1') {
             stackPushBack(&stack, c - '0');
-        } else if (c == '+') {
+        } else if (c == '&') {
+            if (stackSize(&stack) < 2) {
+                printf("\nError enter, not a enought elements\n");
+                exit(1);
+            }
             a = stackPopBack(&stack);
             b = stackPopBack(&stack);
-            stackPushBack(&stack, a * b);
+            stackPushBack(&stack, a & b);
+        } else if (c == '|') {
+            if (stackSize(&stack) < 2) {
+                printf("\nError enter, not a enought elements\n");
+                exit(1);
+            }
+            a = stackPopBack(&stack);
+            b = stackPopBack(&stack);
+            stackPushBack(&stack, a | b);
+        } else {
+            printf("\nError enter, unknown symbols\n");
+            exit(1);
         }
     }
-
-    printf("%d\n", stackTop(&stack));
+    
+    if (stackSize(&stack) == 1) {
+        printf("\n%d\n", stackTop(&stack));
+    } else {
+        printf("Not finished expression\n");
+    }
+    stackRemove(&stack);
     return 0;
 }
+// in: (1 & 1) | (1 & 0) -> 1
+// out: 1 1 & 1 0 & |
+// stack: 

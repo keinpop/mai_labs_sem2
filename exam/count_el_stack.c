@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 typedef struct _node { // Создаем структуру узла стэка
     int data; // Поле значения
@@ -96,20 +97,35 @@ Stack stackCopyFrom(Stack* inS) { // Функция копирования эл�
     return outS;
 }
 
-int stackCountOfDiffElem(Stack* stack) { // Подсчет различных элементов
-    int count = 0;
+bool checkContains(Stack* stack, int val) {
     Node* tmp = stack->last;
-    int data = tmp->data;
-    tmp = tmp->prev; // Переход к следующему узлу
 
-    for (int i = 1; i < stackSize(stack); i++) {
-        if (tmp->data != data) {
-            count++;
+    while (tmp != NULL) {
+        if (tmp->data == val) {
+            return true;
         }
-        data = tmp->data;
-        tmp = tmp->prev; // Переход к следующему узлу
+        tmp = tmp->prev;
     }
 
+    return false;
+}
+
+int stackCountOfDiffElem(Stack* stack) { // Подсчет различных элементов
+    Stack tmpS;
+    stackInit(&tmpS);
+
+    Node* tmp = stack->last;
+
+    while (tmp != NULL) {
+        if (!checkContains(&tmpS, tmp->data)) {
+            stackPushBack(&tmpS, tmp->data); 
+        }
+
+        tmp = tmp->prev;
+    }
+
+    int count = stackSize(&tmpS);
+    stackRemove(&tmpS);
     return count;
 }
 
@@ -119,7 +135,7 @@ int main()
     Stack stack;
     stackInit(&stack);
 
-    int a = 1, b = 2, c = 3, d = 4, e = 5;
+    int a = 1, b = 1, c = 1, d = 1, e = 1;
     stackPushBack(&stack, a);
     stackPushBack(&stack, b);
     stackPushBack(&stack, c);
